@@ -4,17 +4,22 @@ import bell from "./assets/bell.mp3";
 const sound = new Audio(bell);
 
 let start = Date.now();
+let pauseTime = Date.now();
 
 function Timer({ timerLength = 1500 }) {
-  const [time, setTime] = useState(Date.now());
+  const [time, setTime] = useState(0);
   const [paused, setPaused] = useState(true);
 
   const onResetClick = () => {
     resetTimer();
+    pauseTime = Date.now()
   }
 
   const onPauseClick = () => {
     setPaused(!paused);
+    if (!paused) {
+      pauseTime = Date.now()
+    }
   }
 
   const resetTimer = () => {
@@ -24,17 +29,18 @@ function Timer({ timerLength = 1500 }) {
   }
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      if (paused) {
-        start = start + 500; 
-// need to find a better way to do this..
-      } else {
-      setTime(Date.now() - start)
-      }
-    }, 500);
+    if (!paused) {
+      const timer = setInterval(() => {
+        if (pauseTime > 0) {
+          start = start + (Date.now() - pauseTime); 
+          pauseTime = 0
+        }
+        setTime(Date.now() - start)
+      }, 500);
 
-    return function cleanup() {
-      clearInterval(timer);
+      return function cleanup() {
+        clearInterval(timer);
+      }
     }
   });
 
@@ -42,7 +48,11 @@ function Timer({ timerLength = 1500 }) {
 
   if (count == 0) {
     setPaused(true);
+    setTime(0);
     sound.play();
+    setTimeout(() => {
+      sound.play();
+    }, 1000);
   }
 
   return (
