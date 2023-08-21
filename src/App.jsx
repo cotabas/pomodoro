@@ -14,7 +14,6 @@ function App() {
           <img src={tomato} className="logo" alt="tomato logo" />
         </a>
       </div>
-      <h1>Hello, whirld</h1>
     </>
   )
 }

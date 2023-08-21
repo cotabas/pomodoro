@@ -5,14 +5,20 @@ const sound = new Audio(bell);
 
 let start = Date.now();
 let pauseTime = Date.now();
+let timerLength = 1500;
 
-function Timer({ timerLength = 1500 }) {
+function Timer() {
   const [time, setTime] = useState(0);
   const [paused, setPaused] = useState(true);
 
-  const onResetClick = () => {
-    resetTimer();
-    pauseTime = Date.now()
+  const onLengthClick = (timerTime) => {
+    timerLength = timerTime;
+    setPaused(false);
+    setTimeout(() => {
+      resetTimer();
+      pauseTime = Date.now()
+    }, 600);
+    // waiting unpaused so that the component rerenders the timer display after changing the timerLength
   }
 
   const onPauseClick = () => {
@@ -20,6 +26,10 @@ function Timer({ timerLength = 1500 }) {
     if (!paused) {
       pauseTime = Date.now()
     }
+  }
+
+  const soundCheck = () => {
+    sound.play();
   }
 
   const resetTimer = () => {
@@ -50,16 +60,16 @@ function Timer({ timerLength = 1500 }) {
     setPaused(true);
     setTime(0);
     sound.play();
-    setTimeout(() => {
-      sound.play();
-    }, 1000);
   }
 
   return (
     <div className="card">
       <h1>{Math.floor(count / 60)}:{count % 60 < 10 ? "0" + count % 60 : count % 60}</h1>
       <button onClick={onPauseClick}>pause/start</button>
-      <button onClick={onResetClick}>reset</button>
+      <button onClick={() => onLengthClick(1500)}>work</button>
+      <button onClick={() => onLengthClick(240)}>short break</button>
+      <button onClick={() => onLengthClick(900)}>long break</button>
+      <button onClick={soundCheck}>sound check</button>
     </div>
   );
 }
