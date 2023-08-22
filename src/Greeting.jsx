@@ -1,6 +1,6 @@
 function Greeting() {
   return (
-    <div class="card">
+    <div className="card">
       <h1>&quot;Life's about the journey because we all have the same destination&quot;</h1>
     </div>
   )
