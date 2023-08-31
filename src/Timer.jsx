@@ -28,14 +28,11 @@ function Timer() {
     }
   }
 
-  const soundCheck = () => {
-    sound.play();
-  }
-
   const resetTimer = () => {
     setPaused(true);
     start = Date.now();
     setTime(Date.now() - start);
+    //wait.. setTime(0) would be the same thing..
   }
 
   useEffect(() => {
@@ -43,7 +40,7 @@ function Timer() {
       const timer = setInterval(() => {
         if (pauseTime > 0) {
           start = start + (Date.now() - pauseTime); 
-          pauseTime = 0
+          pauseTime = 0;
         }
         setTime(Date.now() - start)
       }, 500);
@@ -69,7 +66,6 @@ function Timer() {
       <button onClick={() => onLengthClick(1500)}>work</button>
       <button onClick={() => onLengthClick(240)}>short break</button>
       <button onClick={() => onLengthClick(900)}>long break</button>
-      <button onClick={soundCheck}>sound check</button>
     </div>
   );
 }
