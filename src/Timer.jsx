@@ -56,6 +56,7 @@ function Timer() {
   if (count == 0) {
     setPaused(true);
     setTime(0);
+    pauseTime = Date.now()
     sound.play();
   }
 
